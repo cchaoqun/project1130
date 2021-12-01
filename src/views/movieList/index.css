@@ -1,0 +1,23 @@
+.movieList{
+  height: 100%;
+  padding: 20px;
+}
+.content{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  border: 5px solid rgb(219, 159, 159);
+    box-shadow:4px 4px 20px rgb(219, 159, 159);
+}
+
+.movie_box{
+  height: 300px;
+  width: 200px;
+}
+.img{}
+.movie_name{
+  text-align: center;
+  padding: 10px;
+  color: rgb(28, 124, 49);
+}
