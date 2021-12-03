@@ -1,9 +1,11 @@
 import   "./index.css";
-
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 var createReactClass = require('create-react-class');
 var MovieList = createReactClass({
   render: function() {
     return  <div className="movieList">
+      {this.state.a}
       <div className='content'>
         {
           this.state.movieList.map(it=>{
@@ -14,10 +16,16 @@ var MovieList = createReactClass({
                 onClick={(e)=>this.goToDetail(it.id)}
               >
                 <div className='movie_url'>
-                  <img src={it.movie_url} alt=""  />
+                  <img src={it.url} alt=""  />
                 </div>
                 <div className='movie_name'>
-                  {it.movie_name}
+                    <a href={`/movieDetail?id=${it.id}`}>{it.title}</a>
+                </div>
+                <div className='movie_name'>
+                  {it.year}
+                </div>
+                <div className='movie_name'>
+                  {it.vote}
                 </div>
               </div>
             )
@@ -29,32 +37,8 @@ var MovieList = createReactClass({
   getInitialState: function() {
     return {
       movieList:[
-        {
-          movie_url:"https://m.media-amazon.com/images/M/MV5BNzdmZTk4MTktZmExNi00OWEwLTgxZDctNTE4NWMwNjc1Nzg2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_FMjpg_UX1000_.jpg",
-          movie_name:'第一步电影',
-          id:1
-        },
-        {
-          movie_url:"https://m.media-amazon.com/images/M/MV5BNzdmZTk4MTktZmExNi00OWEwLTgxZDctNTE4NWMwNjc1Nzg2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_FMjpg_UX1000_.jpg",
-          movie_name:'第一步电影',
-          id:2
-        },
-        {
-          movie_url:"https://m.media-amazon.com/images/M/MV5BNzdmZTk4MTktZmExNi00OWEwLTgxZDctNTE4NWMwNjc1Nzg2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_FMjpg_UX1000_.jpg",
-          movie_name:'第一步电影',
-          id:3
-        },
-        {
-          movie_url:"https://m.media-amazon.com/images/M/MV5BNzdmZTk4MTktZmExNi00OWEwLTgxZDctNTE4NWMwNjc1Nzg2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_FMjpg_UX1000_.jpg",
-          movie_name:'第一步电影',
-          id:4
-        },
-        {
-          movie_url:"https://m.media-amazon.com/images/M/MV5BNzdmZTk4MTktZmExNi00OWEwLTgxZDctNTE4NWMwNjc1Nzg2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_FMjpg_UX1000_.jpg",
-          movie_name:'第一步电影',
-          id:5
-        },
-      ]
+      ],
+      a:111
     };
   },
   getDefaultProps: function() {
@@ -62,9 +46,14 @@ var MovieList = createReactClass({
     };
   },
   componentDidMount(){
+    axios.get('http://localhost:8080/movie_list').then(res=>{
+      console.log(res)
+      this.setState({movieList:res.data.results})
+    })
   },
   goToDetail(id){
-    console.log(111)
+    console.log(id)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
   }
 });
 
