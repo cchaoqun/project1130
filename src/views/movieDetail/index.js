@@ -36,6 +36,14 @@ var App = createReactClass({
           </div>
         </div>
         <div className="a-b">
+          <div >
+                  <div className="box">
+                    <img  src={this.state.director.director_url} alt='' />
+                  </div>
+                  <div className="nick">
+                  <a href={`/search/director?name=${this.state.director.director_name}`}>Director : {this.state.director.director_name}</a>
+                    </div>
+          </div>
         {
             this.state.actorList.map(it=>{
               return (
@@ -43,7 +51,9 @@ var App = createReactClass({
                   <div className="box">
                     <img  src={it.actor_url} alt='' />
                   </div>
-                  <div className="nick">{it.actor_name}</div>
+                  <div className="nick">
+                  <a href={`/actorDetail?name=${it.actor_name}`}>Actor : {it.actor_name}</a>
+                    </div>
                   </div>
               )
             })
@@ -63,15 +73,13 @@ var App = createReactClass({
           </div>
           <div className="box1">
             <span className="name">Box Office:</span>
-            <span className="value">{this.state.rating.boxOffice || "--"}</span>
+            <span className="value">{this.state.boxOffice.boxOffice || "--"}</span>
           </div>
           </div>
-          
-          
         </div>
         <div className="b-b">
           <div className="ques">Is this movie a oscar winner?</div>
-          <div className="ans">{this.state.winner.winner || '--'}</div>
+          <div className="ans">{this.state.winner.winner || 'NO'}</div>
         </div>
       </div>
     </div>
@@ -83,6 +91,8 @@ var App = createReactClass({
       actorList:[],
       rating:{},
       winner:{},
+      boxOffice:{},
+      director:{},
     };
   },
   getDefaultProps: function() {
@@ -121,12 +131,30 @@ var App = createReactClass({
       console.log(3,err)
     })
   },
+  getBox(id){
+    axios.get(`http://localhost:8080/boxOffice?id=${id}`).then(res=>{
+      console.log(res)
+      this.setState({boxOffice:res.data.data})
+    }).catch(err=>{
+      console.log(3,err)
+    })
+  },
+  getDirector(id){
+    axios.get(`http://localhost:8080/director?id=${id}`).then(res=>{
+      console.log(res)
+      this.setState({director:res.data.data})
+    }).catch(err=>{
+      console.log(3,err)
+    })
+  },
   componentDidMount(){
     console.log(123,this.props.history)
     this.getMovieInfo(this.state.id)
     this.getWinner(this.state.id)
     this.getRating(this.state.id)
     this.getActorList(this.state.id)
+    this.getBox(this.state.id)
+    this.getDirector(this.state.id)
   }
 });
 
