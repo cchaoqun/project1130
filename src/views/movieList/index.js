@@ -19,7 +19,7 @@ var MovieList = createReactClass({
           dataIndex: 'url',
           key: 'url',
           render:function(text, record, index){
-            return <img src={text} className='movie_img' />
+            return <img src={text} className='movie_img' alt=''/>
           }
         },
         {

@@ -1,88 +1,101 @@
 import   "./index.css";
 import axios from 'axios'
- 
+import { Row, Col,Tooltip,Button } from 'antd';
+
 var createReactClass = require('create-react-class');
 var App = createReactClass({
   render: function() {
     return  <div className="App">
       <div className="a">
-        <div className="a-t">
-          <div className="img">
-            <img  src={this.state.movieInfo.movie_url} alt='' /> 
-          </div>
-          <div className="desc">
-            <div className="header">
-              <span className="title">{this.state.movieInfo.movie_title || '--'}</span>
-              <span className="year">{this.state.movieInfo.year || '--'}</span>
+        <div className="header">
+          <span className="title">{this.state.movieInfo.movie_title || '--'}</span>
+          <span className="year">{this.state.movieInfo.year || '--'}</span>
+        </div>
+          <div className="a-t">
+            <div className="img">
+              <img  src={this.state.movieInfo.movie_url} alt='' /> 
             </div>
-            <div className="detail">
-              <div>
-                <span className="name">Original Title:</span>
-                <span className="value">{this.state.movieInfo.original_title || '--'}</span>
-              </div>
-              <div>
-                <span className="name">Duration:</span>
-                <span className="value">{this.state.movieInfo.duration || '--'}</span>
-              </div>
-              <div>
-                <span className="name">Language:</span>
-                <span className="value">{this.state.movieInfo.language || '--'}</span>
-              </div>
-              <div>
-                <span className="name">Description:</span>
-                <span className="value">{this.state.movieInfo.description || '--'}</span>
+            <div className="desc">
+              <div className="detail">
+                <div>
+                  <span className="name">Original Title:</span>
+                  <span className="value">{this.state.movieInfo.original_title || '--'}</span>
+                </div>
+                <div>
+                  <span className="name">Duration:</span>
+                  <span className="value">{this.state.movieInfo.duration || '--'}</span>
+                </div>
+                <div>
+                  <span className="name">Language:</span>
+                  <span className="value">{this.state.movieInfo.language || '--'}</span>
+                </div>
+                
+                <div>
+                  <span className="name">Rating:</span>
+                  <span className="value">{this.state.rating.vote || '--'}</span>
+                </div>
+                <div>
+                  <span className="name">Bechdel Score:</span>
+                  <span className="value">{this.state.rating.score || '--'}</span>
+                </div>
+                <div>
+                  <span className="name">Box Office:</span>
+                  <span className="value">{this.state.boxOffice.boxOffice || '--'}</span>
+                </div>
+                <div>
+                  <span className="name">Is this movie a oscar winner?</span>
+                  <span className="value">{this.state.winner.winner || '--'}</span>
+                </div>
+                <div>
+                  <span className="name">Description:</span>
+                  <span className="value over" >{this.state.movieInfo.description || '--'}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="a-b">
-          <div >
+          <div className="a-b">
+            <div className="actor_list">
+              Director & Actors   <Button type='link' onClick={this.handleClick}>{this.state.isAll ? "Pull up":'Show all'}</Button>
+            </div>
+            <Row gutter={20}>
+              <Col span={4}>
+                <div className="actor-box">
                   <div className="box">
-                    <img  src={this.state.director.director_url} alt='' />
-                  </div>
-                  <div className="nick">
-                  <a href={`/search/director?name=${this.state.director.director_name}`}>Director : {this.state.director.director_name}</a>
+                      <img  src={this.state.director.director_url} alt='' />
                     </div>
-          </div>
-        {
-            this.state.actorList.map(it=>{
-              return (
-                <div key={it.actor_name} >
-                  <div className="box">
-                    <img  src={it.actor_url} alt='' />
-                  </div>
-                  <div className="nick">
-                  <a href={`/actorDetail?name=${it.actor_name}`}>Actor : {it.actor_name}</a>
+                      <div className="nick">
+                      <Tooltip placement="topLeft" title={this.state.director.director_name}>
+                        <a href={`/search/director?name=${this.state.director.director_name}`}>Director : {this.state.director.director_name}</a>
+                      </Tooltip>
                     </div>
-                  </div>
-              )
-            })
-          }
+                    </div>
+              </Col>
+            {
+                this.state.actorList.map(it=>{
+                  return (
+                    <Col span={4}>
+                      <div className="actor-box">
+                      <div key={it.actor_name} >
+                        <div className="box">
+                          <img  src={it.actor_url} alt='' />
+                        </div>
+                        <div className="nick">
+                        <Tooltip placement="topLeft" title={it.actor_name}>
+                          <a href={`/actorDetail?name=${it.actor_name}`}>Actor : {it.actor_name}</a>
+                        </Tooltip>
+                          </div>
+                      </div>
+                      </div>
+                    </Col>
+                  )
+                })
+              }
+            </Row>
+          </div>
+
         </div>
+
       </div>
-      <div className="b">
-        <div className="b-t">
-          <div>
-          <div className="box1">
-            <span className="name">Rating:</span>
-            <span className="value">{this.state.rating.vote || '--'}</span>
-          </div>
-          <div className="box1">
-            <span className="name">Bechdel Score:</span>
-            <span className="value">{this.state.rating.score || '--'}</span>
-          </div>
-          <div className="box1">
-            <span className="name">Box Office:</span>
-            <span className="value">{this.state.boxOffice.boxOffice || "--"}</span>
-          </div>
-          </div>
-        </div>
-        <div className="b-b">
-          <div className="ques">Is this movie a oscar winner?</div>
-          <div className="ans">{this.state.winner.winner || 'NO'}</div>
-        </div>
-      </div>
-    </div>
   },
   getInitialState: function() {
     return {
@@ -93,11 +106,23 @@ var App = createReactClass({
       winner:{},
       boxOffice:{},
       director:{},
+      isAll:false
     };
   },
   getDefaultProps: function() {
     return {
     };
+  },
+  handleClick(){
+    if(this.state.isAll){
+      this.getActorList(this.state.id,5)
+    this.setState({isAll:false})
+
+    }else{
+      this.getActorList(this.state.id,'')
+    this.setState({isAll:true})
+
+    }
   },
   getMovieInfo(id){
     axios.get(`http://localhost:8080/movie_info?id=${id}`).then(res=>{
@@ -107,8 +132,8 @@ var App = createReactClass({
       console.log(3,err)
     })
   },
-  getActorList(id){
-    axios.get(`http://localhost:8080/actor_list?id=${id}`).then(res=>{
+  getActorList(id,limit){
+    axios.get(`http://localhost:8080/actor_list?id=${id}&limit=${limit}`).then(res=>{
       console.log(res)
       this.setState({actorList:res.data.data})
     }).catch(err=>{
@@ -152,7 +177,7 @@ var App = createReactClass({
     this.getMovieInfo(this.state.id)
     this.getWinner(this.state.id)
     this.getRating(this.state.id)
-    this.getActorList(this.state.id)
+    this.getActorList(this.state.id,5)
     this.getBox(this.state.id)
     this.getDirector(this.state.id)
   }
