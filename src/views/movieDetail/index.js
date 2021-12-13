@@ -1,6 +1,7 @@
 import   "./index.css";
 import axios from 'axios'
-import { Row, Col,Tooltip,Button } from 'antd';
+import { Row, Col,Tooltip,Button,Avatar} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 var createReactClass = require('create-react-class');
 var App = createReactClass({
@@ -32,7 +33,7 @@ var App = createReactClass({
                 
                 <div>
                   <span className="name">Rating:</span>
-                  <span className="value">{this.state.rating.vote || '--'}</span>
+                  <span className="value">{this.state.movieInfo.vote || '--'}</span>
                 </div>
                 <div>
                   <span className="name">Bechdel Score:</span>
@@ -44,7 +45,7 @@ var App = createReactClass({
                 </div>
                 <div>
                   <span className="name">Is this movie a oscar winner?</span>
-                  <span className="value">{this.state.winner.winner || '--'}</span>
+                  <span className="value">{this.state.winner.winner? 'YES' : 'NO'}</span>
                 </div>
                 <div>
                   <span className="name">Description:</span>
@@ -77,11 +78,11 @@ var App = createReactClass({
                       <div className="actor-box">
                       <div key={it.actor_name} >
                         <div className="box">
-                          <img  src={it.actor_url} alt='' />
+                        <img  src={it.actor_url} alt='' />
                         </div>
                         <div className="nick">
                         <Tooltip placement="topLeft" title={it.actor_name}>
-                          <a href={`/actorDetail?name=${it.actor_name}`}>Actor : {it.actor_name}</a>
+                          <a href={`/search/actor?name=${it.actor_name}`}>{it.actor_name}</a>
                         </Tooltip>
                           </div>
                       </div>
